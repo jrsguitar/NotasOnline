@@ -66,6 +66,7 @@ public class DisciplinaService {
 		findById(id);
 		try {
 			disciplinaRepository.deleteById(id);
+			disciplinaRepository.flush();
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há dados relacionados ao objeto");
 		}

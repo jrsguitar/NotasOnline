@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -92,6 +91,7 @@ public class TurmaService {
 		findById(id);
 		try {
 			turmaRepository.deleteById(id);
+			turmaRepository.flush();
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há dados relacionados ao objeto");
 		}catch (ObjectNotFoundException e) {
@@ -99,16 +99,6 @@ public class TurmaService {
 		}
 	}
 
-	@Transactional
-	public Turma update(Turma obj, Long id) {
-		Optional<Turma> newObj = turmaRepository.findById(id);
 
-		if (newObj.isPresent()) {
-
-			BeanUtils.copyProperties(obj, newObj.get(), "id");
-		}
-
-		return turmaRepository.save(newObj.get());
-	}
 
 }
