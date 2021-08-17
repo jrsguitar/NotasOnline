@@ -18,22 +18,22 @@ public class EscolaService {
 
 	@Autowired
 	private EscolaRepository escolaRepository;
-	
-	public List<Escola> findAll(){
+
+	public List<Escola> findAll() {
 		return escolaRepository.findAll();
 	}
-	
+
 	public Escola findById(Long id) {
 		Optional<Escola> obj = escolaRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Escola não encontrada" + id));
 	}
-	
+
 	public List<Escola> findByNome(String nome) {
 		return escolaRepository.findByNomeContaining(nome);
 	}
-	
-	public Page<Escola> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
+
+	public Page<Escola> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return escolaRepository.findAll(pageRequest);
 	}
 

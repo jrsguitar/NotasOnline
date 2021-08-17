@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.jrcode.api.assembler.EscolaModelAssembler;
+import br.com.jrcode.api.model.EscolaModel;
 import br.com.jrcode.domain.model.Escola;
 import br.com.jrcode.domain.service.EscolaService;
 
@@ -22,22 +24,22 @@ public class EscolaController {
 	
 	@Autowired
 	private EscolaService escolaService;
+	@Autowired
+	private EscolaModelAssembler assembler;
 	
 	@GetMapping
-	public ResponseEntity<List<Escola>> buscarTodos(){
-		List<Escola> list = escolaService.findAll();		
-		return ResponseEntity.ok(list);
+	public ResponseEntity<List<EscolaModel>> buscarTodos(){
+		return ResponseEntity.ok(assembler.toCollectionModel(escolaService.findAll()));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Escola> findById(@PathVariable Long id) {
-		return ResponseEntity.ok(escolaService.findById(id));
+	public ResponseEntity<EscolaModel> findById(@PathVariable Long id) {
+		return ResponseEntity.ok(assembler.toModel(escolaService.findById(id)) );
 	}
 
 	@GetMapping("/por-nome")
-	public ResponseEntity<List<Escola>> findByName(@PathParam(value = "nome") String nome) {
-		List<Escola> list = escolaService.findByNome(nome);
-		return ResponseEntity.ok(list);
+	public ResponseEntity<List<EscolaModel>> findByName(@PathParam(value = "nome") String nome) {
+		return ResponseEntity.ok(assembler.toCollectionModel(escolaService.findByNome(nome)));
 	}
 	
 	@GetMapping("/paginas")

@@ -47,15 +47,15 @@ public class TurmaService {
 	}
 
 	@Transactional
-	public Turma insert(Turma turma) {
-		Turma turmaBanco = turmaRepository.findByNome(turma.getNome());
+	public Turma insert(Turma obj) {
+		Turma turmaBanco = turmaRepository.findByNome(obj.getNome());
 
 		if (turmaBanco == null) {
-			turma.setId(null);
-			turmaRepository.save(turma);
+			obj.setId(null);
+			turmaRepository.save(obj);
 		}
 
-		return turma;
+		return obj;
 	}
 
 	@Transactional
@@ -86,7 +86,7 @@ public class TurmaService {
 		}
 
 	}
-
+	
 	@Transactional
 	public void deleteById(Long id) {
 		findById(id);
@@ -94,19 +94,21 @@ public class TurmaService {
 			turmaRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há dados relacionados ao objeto");
+		}catch (ObjectNotFoundException e) {
+			throw new ObjectNotFoundException("Objeto não encontrada");
 		}
 	}
 
 	@Transactional
-	public Turma update(Turma turma, Long id) {
-		Optional<Turma> newTurma = turmaRepository.findById(id);
+	public Turma update(Turma obj, Long id) {
+		Optional<Turma> newObj = turmaRepository.findById(id);
 
-		if (newTurma.isPresent()) {
+		if (newObj.isPresent()) {
 
-			BeanUtils.copyProperties(turma, newTurma.get(), "id");
+			BeanUtils.copyProperties(obj, newObj.get(), "id");
 		}
 
-		return turmaRepository.save(newTurma.get());
+		return turmaRepository.save(newObj.get());
 	}
 
 }
