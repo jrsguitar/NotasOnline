@@ -15,11 +15,11 @@ public class EscolaModelAssembler {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public EscolaModel toModel(Escola obj) {
-		return modelMapper.map(obj, EscolaModel.class);
+	public EscolaModel toModel(Escola list) {
+		return modelMapper.map(list, EscolaModel.class);
 	}
 
-	public List<EscolaModel> toCollectionModel(List<Escola> restaurantes) {
-		return restaurantes.stream().map(restaurante -> toModel(restaurante)).collect(Collectors.toList());
+	public List<EscolaModel> toCollectionModel(List<Escola> list) {
+		return list.stream().map(obj -> toModel(obj)).collect(Collectors.toList());
 	}
 }
