@@ -27,7 +27,6 @@ public class Aluno extends Usuario {
 	@NotNull(message = "Preencha o campo matrícula")
 	@PositiveOrZero(message = "A matricula não pode ser um valor negativo")
 	private Long matricula;
-
 	@ManyToOne
 	private Turma turma;
 

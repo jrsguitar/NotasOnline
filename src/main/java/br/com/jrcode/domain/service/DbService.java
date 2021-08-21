@@ -55,7 +55,7 @@ public class DbService {
 		
 		rUsuario.saveAll(Arrays.asList(aluno1, aluno2, prof1, aluno3));
 		rTurma.save(turma1);
-		turma1.getAlunos().addAll(Arrays.asList(aluno1, aluno2));
+		turma1.getAlunos().addAll(Arrays.asList(aluno1, aluno2,aluno3));
 		rTurma.save(turma1);
 
 		Disciplina matematica = new Disciplina(null, "Matemática", prof1, turma1);

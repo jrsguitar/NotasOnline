@@ -1,9 +1,6 @@
 package br.com.jrcode.domain.service;
 
 import java.util.List;
-import java.util.Optional;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -33,16 +30,15 @@ public class TurmaService {
 	}
 
 	public Turma findById(Long id) {
-		Optional<Turma> obj = turmaRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Turma não encontrada" + id));
+		return turmaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Turma não encontrada" + id));
 	}
 
 	public List<Turma> findByNomeContaining(String nome) {
 		return turmaRepository.findByNomeContaining(nome);
 	}
-	
-	public Page<Turma> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
+
+	public Page<Turma> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return turmaRepository.findAll(pageRequest);
 	}
 
@@ -60,33 +56,22 @@ public class TurmaService {
 
 	@Transactional
 	public void adicionarAluno(Long idTurma, Long matriculaAluno) {
-		Optional<Turma> turma = turmaRepository.findById(idTurma);
-		Optional<Aluno> aluno = alunoRepository.findByMatricula(matriculaAluno);
-		try {
-			if (turma.isPresent() & aluno.isPresent()) {
-				turma.get().getAlunos().add(aluno.get());
-			}
-		} catch (ObjectNotFoundException e) {
-			throw new ObjectNotFoundException("Objeto não encontrada");
-		}
+		Turma turma = findById(idTurma);
+		Aluno aluno = alunoRepository.findByMatricula(matriculaAluno)
+				.orElseThrow(() -> new ObjectNotFoundException("Aluno não encontrado"));
 
+		turma.getAlunos().add(aluno);
 	}
 
 	@Transactional
 	public void removerAluno(Long idTurma, Long matriculaAluno) {
-		Optional<Turma> turma = turmaRepository.findById(idTurma);
-		Optional<Aluno> aluno = alunoRepository.findByMatricula(matriculaAluno);
-		try {
-			if (turma.isPresent() & aluno.isPresent()) {
-				turma.get().getAlunos().remove(aluno.get());
-
-			}
-		} catch (ObjectNotFoundException e) {
-			throw new ObjectNotFoundException("Objeto não encontrada");
-		}
+		Turma turma = findById(idTurma);
+		Aluno aluno = alunoRepository.findByMatricula(matriculaAluno)
+				.orElseThrow(() -> new ObjectNotFoundException("Aluno não encontrado"));
+		turma.getAlunos().remove(aluno);
 
 	}
-	
+
 	@Transactional
 	public void deleteById(Long id) {
 		findById(id);
@@ -95,11 +80,9 @@ public class TurmaService {
 			turmaRepository.flush();
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há dados relacionados ao objeto");
-		}catch (ObjectNotFoundException e) {
+		} catch (ObjectNotFoundException e) {
 			throw new ObjectNotFoundException("Objeto não encontrada");
 		}
 	}
-
-
 
 }

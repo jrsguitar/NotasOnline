@@ -1,7 +1,6 @@
 package br.com.jrcode.domain.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,8 +23,8 @@ public class EscolaService {
 	}
 
 	public Escola findById(Long id) {
-		Optional<Escola> obj = escolaRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Escola não encontrada" + id));
+		return escolaRepository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException("Escola não encontrada" + id));
 	}
 
 	public List<Escola> findByNome(String nome) {

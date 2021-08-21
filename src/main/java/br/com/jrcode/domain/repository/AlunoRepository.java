@@ -10,5 +10,7 @@ import br.com.jrcode.domain.model.Aluno;
 public interface AlunoRepository extends JpaRepository<Aluno, Long>{
 	
 	Optional<Aluno> findByMatricula(Long matricula);
+
 	List<Aluno> findByNomeContaining(String nome);
+
 }

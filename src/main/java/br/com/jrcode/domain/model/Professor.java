@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class Professor extends Usuario{/**
 		super(id, nome, escola);
 		this.senha = senha;
 	}
+	@JsonIgnore
 	@OneToMany
 	@JoinTable(name = "professor_turma")
 	private List<Turma> turmas = new ArrayList<>();	

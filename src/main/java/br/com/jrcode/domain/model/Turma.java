@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.jrcode.domain.model.enums.Turno;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,9 +24,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Turma implements Serializable{/**
-	 * 
-	 */
+public class Turma implements Serializable {
+	/**
+	* 
+	*/
 	private static final long serialVersionUID = 1L;
 	@Id
 	@EqualsAndHashCode.Include
@@ -35,17 +38,15 @@ public class Turma implements Serializable{/**
 	private OffsetDateTime ano;
 	@NotNull(message = "Preencha o campo turno")
 	private Turno turno;
+	@JsonIgnore
 	@OneToMany
 	private List<Aluno> alunos = new ArrayList<>();
 
 	public Turma(Long id, String nome, OffsetDateTime ano, Turno turno) {
-
 		this.id = id;
 		this.nome = nome;
 		this.ano = ano;
 		this.turno = turno;
 	}
-	
-	
 
 }

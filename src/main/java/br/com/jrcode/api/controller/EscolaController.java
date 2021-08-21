@@ -21,27 +21,27 @@ import br.com.jrcode.domain.service.EscolaService;
 @RestController
 @RequestMapping("/escolas")
 public class EscolaController {
-	
+
 	@Autowired
 	private EscolaService escolaService;
 	@Autowired
 	private EscolaModelAssembler assembler;
-	
+
 	@GetMapping
-	public ResponseEntity<List<EscolaModel>> buscarTodos(){
+	public ResponseEntity<List<EscolaModel>> buscarTodos() {
 		return ResponseEntity.ok(assembler.toCollectionModel(escolaService.findAll()));
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EscolaModel> findById(@PathVariable Long id) {
-		return ResponseEntity.ok(assembler.toModel(escolaService.findById(id)) );
+		return ResponseEntity.ok(assembler.toModel(escolaService.findById(id)));
 	}
 
 	@GetMapping("/por-nome")
 	public ResponseEntity<List<EscolaModel>> findByName(@PathParam(value = "nome") String nome) {
 		return ResponseEntity.ok(assembler.toCollectionModel(escolaService.findByNome(nome)));
 	}
-	
+
 	@GetMapping("/paginas")
 	public ResponseEntity<Page<Escola>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
