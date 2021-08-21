@@ -1,16 +1,14 @@
 package br.com.jrcode.domain.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,14 +25,12 @@ public class HistoricoNotas {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Double media;
-	@ElementCollection
-	@CollectionTable(name = "historico_notas_disciplinas")
-	private List<Double> notas = new ArrayList<>();
-	
-	
+	@DecimalMax(value = "10.0", message = "O Peso não pode exceder o valor 10")
+	private Double pesoAcumulado;
+
 	@OneToOne
 	private Aluno aluno;
-	
+
 	@OneToOne
 	private Disciplina disciplina;
 
@@ -44,22 +40,21 @@ public class HistoricoNotas {
 		this.disciplina = disciplina;
 		media = calcMedia(aluno.getAvaliacoes());
 	}
-	
+
 	public Double calcMedia(List<Avaliacao> list) {
 		double sum = 0.0;
-		int contador = 0;
-		
-		if(!list.isEmpty()) {
-			for(Avaliacao a: list) {
-				if(a.getDisciplina().equals(disciplina)) {
-					sum += a.getNota();
-					notas.add(a.getNota());
-					contador ++;
+		int pesoTotal = 10;
+		pesoAcumulado = 0.0;
+
+		if (!list.isEmpty()) {
+			for (Avaliacao av : list) {
+				if (av.getDisciplina().equals(disciplina)) {
+					sum += av.getNota() * av.getPeso();
+					pesoAcumulado += av.getPeso();
 				}
 			}
 		}
-		
-		return sum / contador;
+
+		return sum / pesoTotal;
 	}
-	
 }

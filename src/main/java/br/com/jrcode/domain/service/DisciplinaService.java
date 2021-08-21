@@ -3,7 +3,7 @@ package br.com.jrcode.domain.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.jrcode.domain.model.Disciplina;
 import br.com.jrcode.domain.repository.DisciplinaRepository;

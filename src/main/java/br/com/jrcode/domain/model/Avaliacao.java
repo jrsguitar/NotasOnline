@@ -31,6 +31,7 @@ public class Avaliacao implements Serializable {
 	private Long id;
 	private OffsetDateTime data;
 	private Double nota;
+	private Double peso;
 	
 	@ManyToOne
 	private Aluno aluno;

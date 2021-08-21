@@ -63,13 +63,14 @@ public class DbService {
 		Disciplina portugues = new Disciplina(null, "Portugues", prof1, turma1);
 		rDisciplina.saveAll(Arrays.asList(matematica, portugues));
 
-		Avaliacao av1 = new Avaliacao(null, null, 8.2, aluno1, matematica);
-		Avaliacao av2 = new Avaliacao(null, null, 7.5, aluno1, matematica);
-		Avaliacao av3 = new Avaliacao(null, null, 9.0, aluno1, matematica);
-		Avaliacao av4 = new Avaliacao(null, null, 8.2, aluno1, portugues);
-		Avaliacao av5 = new Avaliacao(null, null, 8.0, aluno1, portugues);
-		Avaliacao av6 = new Avaliacao(null, null, 5.0, aluno1, portugues);
-		Avaliacao av7 = new Avaliacao(null, null, 4.0, aluno1, portugues);
+		Avaliacao av1 = new Avaliacao(null, null, 8.2, 5.0, aluno1, matematica);
+		Avaliacao av2 = new Avaliacao(null, null, 7.5, 2.5, aluno1, matematica);
+		Avaliacao av3 = new Avaliacao(null, null, 9.0,2.5, aluno1, matematica);
+		Avaliacao av4 = new Avaliacao(null, null, 8.2,2.5, aluno1, portugues);
+		Avaliacao av5 = new Avaliacao(null, null, 8.0,2.5, aluno1, portugues);
+		Avaliacao av6 = new Avaliacao(null, null, 5.0,2.5, aluno1, portugues);
+		Avaliacao av7 = new Avaliacao(null, null, 4.0,2.5, aluno1, portugues);
+		
 		rAvaliacao.saveAll(Arrays.asList(av1, av2, av3, av4, av5, av6, av7));
 
 		aluno1.getAvaliacoes().addAll(Arrays.asList(av1, av2, av3, av4, av5, av6, av7));
