@@ -42,7 +42,13 @@ public class TurmaController {
 	public ResponseEntity<List<TurmaModel>> buscarTodos() {
 		return ResponseEntity.ok(assembler.toCollectionModel(turmaService.findAll()));
 	}
-
+	
+	@GetMapping("/por-nome")
+	public ResponseEntity<List<TurmaModel>> findByName(@PathParam(value = "nome") String nome) {
+		List<Turma> list = turmaService.findByNomeContaining(nome);
+		return ResponseEntity.ok(assembler.toCollectionModel(list));
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<TurmaModel> buscarPorId(@PathVariable Long id) {
 		return ResponseEntity.ok(assembler.toModel(turmaService.findById(id)));
