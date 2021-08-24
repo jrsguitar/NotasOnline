@@ -42,13 +42,13 @@ public class TurmaController {
 	public ResponseEntity<List<TurmaModel>> buscarTodos() {
 		return ResponseEntity.ok(assembler.toCollectionModel(turmaService.findAll()));
 	}
-	
+
 	@GetMapping("/por-nome")
 	public ResponseEntity<List<TurmaModel>> findByName(@PathParam(value = "nome") String nome) {
 		List<Turma> list = turmaService.findByNomeContaining(nome);
 		return ResponseEntity.ok(assembler.toCollectionModel(list));
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<TurmaModel> buscarPorId(@PathVariable Long id) {
 		return ResponseEntity.ok(assembler.toModel(turmaService.findById(id)));
@@ -62,22 +62,6 @@ public class TurmaController {
 
 		Page<Turma> list = turmaService.findPage(page, linesPerPage, orderBy, direction);
 		return ResponseEntity.ok(list);
-	}
-
-	@PutMapping("/adicionar-aluno")
-	public ResponseEntity<Void> adicionarAluno(@PathParam(value = "idTurma") Long idTurma,
-			@PathParam(value = "matriculaAluno") Long matriculaAluno) {
-
-		turmaService.adicionarAluno(idTurma, matriculaAluno);
-		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping("/remover-aluno")
-	public ResponseEntity<Void> removerAluno(@PathParam(value = "idTurma") Long idTurma,
-			@PathParam(value = "matriculaAluno") Long matriculaAluno) {
-
-		turmaService.removerAluno(idTurma, matriculaAluno);
-		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping

@@ -10,9 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.jrcode.domain.model.Aluno;
 import br.com.jrcode.domain.model.Turma;
-import br.com.jrcode.domain.repository.AlunoRepository;
 import br.com.jrcode.domain.repository.TurmaRepository;
 import br.com.jrcode.domain.service.exception.DataIntegrityException;
 import br.com.jrcode.domain.service.exception.ObjectNotFoundException;
@@ -22,8 +20,7 @@ public class TurmaService {
 
 	@Autowired
 	private TurmaRepository turmaRepository;
-	@Autowired
-	private AlunoRepository alunoRepository;
+
 
 	public List<Turma> findAll() {
 		return turmaRepository.findAll();
@@ -52,24 +49,6 @@ public class TurmaService {
 		}
 
 		return obj;
-	}
-
-	@Transactional
-	public void adicionarAluno(Long idTurma, Long matriculaAluno) {
-		Turma turma = findById(idTurma);
-		Aluno aluno = alunoRepository.findByMatricula(matriculaAluno)
-				.orElseThrow(() -> new ObjectNotFoundException("Aluno não encontrado"));
-
-		turma.getAlunos().add(aluno);
-	}
-
-	@Transactional
-	public void removerAluno(Long idTurma, Long matriculaAluno) {
-		Turma turma = findById(idTurma);
-		Aluno aluno = alunoRepository.findByMatricula(matriculaAluno)
-				.orElseThrow(() -> new ObjectNotFoundException("Aluno não encontrado"));
-		turma.getAlunos().remove(aluno);
-
 	}
 
 	@Transactional
