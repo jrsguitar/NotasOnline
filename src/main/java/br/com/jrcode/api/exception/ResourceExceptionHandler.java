@@ -15,24 +15,27 @@ import br.com.jrcode.domain.service.exception.ViolationException;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 	@ExceptionHandler(ObjectNotFoundException.class)
-	public ResponseEntity<StandardError> objectNotFund(ObjectNotFoundException e, HttpServletRequest request){
-		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
+	public ResponseEntity<StandardError> objectNotFund(ObjectNotFoundException e, HttpServletRequest request) {
+		StandardError err = StandardError.builder().status(HttpStatus.NOT_FOUND.value()).msg(e.getMessage())
+				.timeStamp(System.currentTimeMillis()).build();
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
-	
+
 	@ExceptionHandler(ViolationException.class)
-	public ResponseEntity<StandardError> dataViolation(ViolationException e, HttpServletRequest request){
-		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+	public ResponseEntity<StandardError> dataViolation(ViolationException e, HttpServletRequest request) {
+
+		StandardError err = StandardError.builder().status(HttpStatus.BAD_REQUEST.value()).msg(e.getMessage())
+				.timeStamp(System.currentTimeMillis()).build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
-	
-	
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<StandardError> fieldErro(MethodArgumentNotValidException e, HttpServletRequest request){
-		
-		ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro ao preencher o campo", System.currentTimeMillis());
-		
-		for(FieldError x: e.getBindingResult().getFieldErrors()) {
+	public ResponseEntity<StandardError> fieldErro(MethodArgumentNotValidException e, HttpServletRequest request) {
+
+		ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro ao preencher o campo",
+				System.currentTimeMillis());
+
+		for (FieldError x : e.getBindingResult().getFieldErrors()) {
 			err.addError(x.getField(), x.getDefaultMessage());
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);

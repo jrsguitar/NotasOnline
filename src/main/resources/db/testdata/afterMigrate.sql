@@ -8,8 +8,7 @@ delete from escola;
 delete from historico_medias_disciplinas;
 delete from professor;
 delete from professor_turma;
-delete from turma;
-delete from turma_alunos; 
+delete from turma; 
 
 set foreign_key_checks = 1;
 
