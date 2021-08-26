@@ -24,7 +24,7 @@ public class EscolaService {
 
 	public Escola findById(Long id) {
 		return escolaRepository.findById(id)
-				.orElseThrow(() -> new ObjectNotFoundException("Escola não encontrada" + id));
+				.orElseThrow(() -> new ObjectNotFoundException("Escola não encontrada id=" + id));
 	}
 
 	public List<Escola> findByNome(String nome) {

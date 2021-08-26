@@ -28,7 +28,7 @@ public class DisciplinaService {
 
 	public Disciplina findById(Long id) {
 		return disciplinaRepository.findById(id)
-				.orElseThrow(() -> new ObjectNotFoundException("Disciplina não encontrada" + id));
+				.orElseThrow(() -> new ObjectNotFoundException("Disciplina não encontrada id=" + id));
 	}
 
 	public List<Disciplina> findByNome(String nome) {

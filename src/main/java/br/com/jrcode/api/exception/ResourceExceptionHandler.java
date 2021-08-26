@@ -1,43 +1,102 @@
 package br.com.jrcode.api.exception;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
+import br.com.jrcode.domain.service.exception.DataIntegrityException;
 import br.com.jrcode.domain.service.exception.ObjectNotFoundException;
 import br.com.jrcode.domain.service.exception.ViolationException;
 
 @ControllerAdvice
-public class ResourceExceptionHandler {
+public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
+	
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		Throwable rootCause = ExceptionUtils.getRootCause(ex);
+		
+		if (rootCause instanceof InvalidFormatException) {
+			return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
+		}
+		
+		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+		String detail = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		
+		return handleExceptionInternal(ex, problem, headers, status, request);
+	}
+	
+	private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		String path = ex.getPath().stream()
+				.map(ref -> ref.getFieldName())
+				.collect(Collectors.joining("."));
+		
+		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+		String detail = String.format("A propriedade '%s' recebeu o valor '%s', "
+				+ "que é de um tipo inválido. Corrija e informe um valor compatível com o tipo %s.",
+				path, ex.getValue(), ex.getTargetType().getSimpleName());
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		
+		return handleExceptionInternal(ex, problem, headers, status, request);
+	}
+	
 	@ExceptionHandler(ObjectNotFoundException.class)
-	public ResponseEntity<StandardError> objectNotFund(ObjectNotFoundException e, HttpServletRequest request) {
-		StandardError err = StandardError.builder().status(HttpStatus.NOT_FOUND.value()).msg(e.getMessage())
-				.timeStamp(System.currentTimeMillis()).build();
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	public ResponseEntity<?> handlerObjectNotFund(ObjectNotFoundException ex, WebRequest request) {
+
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		Problem problem = createProblemBuilder(status, ProblemType.ENTIDADE_NAO_ENCONTRADA, ex.getMessage()).build();
+
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 
 	@ExceptionHandler(ViolationException.class)
-	public ResponseEntity<StandardError> dataViolation(ViolationException e, HttpServletRequest request) {
+	public ResponseEntity<?> hendlerDataViolation(ViolationException ex, WebRequest request) {
 
-		StandardError err = StandardError.builder().status(HttpStatus.BAD_REQUEST.value()).msg(e.getMessage())
-				.timeStamp(System.currentTimeMillis()).build();
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		Problem problem = createProblemBuilder(status, ProblemType.ERRO_NEGOCIO, ex.getMessage()).build();
+
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<StandardError> fieldErro(MethodArgumentNotValidException e, HttpServletRequest request) {
+	@ExceptionHandler(DataIntegrityException.class)
+	public ResponseEntity<?> hendlerDataIntegrityViolation(DataIntegrityException ex, WebRequest request) {
+		HttpStatus status = HttpStatus.CONFLICT;
+		Problem problem = createProblemBuilder(status, ProblemType.ENTIDADE_EM_USO, ex.getMessage()).build();
 
-		ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro ao preencher o campo",
-				System.currentTimeMillis());
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
 
-		for (FieldError x : e.getBindingResult().getFieldErrors()) {
-			err.addError(x.getField(), x.getDefaultMessage());
+	@Override
+	protected ResponseEntity<Object> handleExceptionInternal(Exception e, Object body, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+
+		if (body == null) {
+			body = Problem.builder().status(status.value()).title(status.getReasonPhrase()).build();
+		} else if (body instanceof String) {
+			body = Problem.builder().status(status.value()).title((String) body).build();
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+
+		return super.handleExceptionInternal(e, body, headers, status, request);
+	}
+
+	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType, String detail) {
+
+		return Problem.builder().status(status.value()).type(problemType.getUri()).title(problemType.getTitle())
+				.detail(detail);
 	}
 }

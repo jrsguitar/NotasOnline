@@ -27,7 +27,7 @@ public class TurmaService {
 	}
 
 	public Turma findById(Long id) {
-		return turmaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Turma não encontrada" + id));
+		return turmaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Turma não encontrada id=" + id));
 	}
 
 	public List<Turma> findByNomeContaining(String nome) {
