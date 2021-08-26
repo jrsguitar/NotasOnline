@@ -1,5 +1,6 @@
 package br.com.jrcode.api.exception;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,8 @@ public class ValidationError extends Problem {
 
 	private List<FieldMessage> list = new ArrayList<>();
 
-	public ValidationError(Integer status, String title,String type,String detail) {
-		super(status, title,type,detail);
+	public ValidationError(LocalDateTime timestamp,Integer status, String title,String type,String detail,String userMessage) {
+		super(timestamp,status, title,type,detail,userMessage);
 
 	}
 
