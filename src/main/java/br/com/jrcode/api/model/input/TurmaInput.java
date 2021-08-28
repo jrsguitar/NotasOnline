@@ -13,10 +13,10 @@ import lombok.Setter;
 @Setter
 public class TurmaInput {
 
-	@NotBlank(message = "Preencha o campo nome")
+	@NotBlank
 	private String nome;
 	private OffsetDateTime ano;
-	@NotNull(message = "Preencha o campo turno")
+	@NotNull
 	private Turno turno;
 
 }
