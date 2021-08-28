@@ -12,11 +12,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-
-import org.hibernate.validator.constraints.Length;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,14 +32,9 @@ public class Aluno implements Serializable {
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@NotBlank(message = "Preencha o campo nome")
-	@Length(min = 3, max = 30, message = "Tamanho minimo de 3 caracteres e maxímo de 30 caracteres")
 	private String nome;
-	@NotNull(message = "Preencha o campo escola")
 	@OneToOne
 	private Escola escola;
-	@NotNull(message = "Preencha o campo matrícula")
-	@PositiveOrZero(message = "A matricula não pode ser um valor negativo")
 	private Long matricula;
 	@ManyToOne
 	private Turma turma;
@@ -53,11 +43,7 @@ public class Aluno implements Serializable {
 	@JoinTable(name = "aluno_avaliacoes")
 	private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-	public Aluno(Long id,
-			@NotBlank(message = "Preencha o campo nome") @Length(min = 3, max = 30, message = "Tamanho minimo de 3 caracteres e maxímo de 30 caracteres") String nome,
-			@NotNull(message = "Preencha o campo escola") Escola escola,
-			@NotNull(message = "Preencha o campo matrícula") @PositiveOrZero(message = "A matricula não pode ser um valor negativo") Long matricula,
-			Turma turma) {
+	public Aluno(Long id, String nome, Escola escola, Long matricula, Turma turma) {
 		this.id = id;
 		this.nome = nome;
 		this.escola = escola;

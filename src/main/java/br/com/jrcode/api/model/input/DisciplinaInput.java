@@ -1,9 +1,7 @@
 package br.com.jrcode.api.model.input;
 
-import javax.validation.Valid;
+import javax.persistence.Basic;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -12,15 +10,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AlunoInput {
+public class DisciplinaInput{
 	@NotBlank
 	@Length(min = 3, max = 30)
 	private String nome;
-	@NotNull
-	@PositiveOrZero
-	private Long matricula;
-	@Valid
-	@NotNull
-	private EscolaIdInput escola;	
+	@Basic
+	private ProfessorIdInput professor;
+	
+	private TurmaIdInput turma;
 
 }

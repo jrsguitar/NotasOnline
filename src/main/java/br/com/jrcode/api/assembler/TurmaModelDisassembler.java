@@ -16,7 +16,7 @@ public class TurmaModelDisassembler {
 		return modelMapper.map(obj, Turma.class);
 	}
 	
-	public void copyToDomainObject(TurmaInput restauranteInput, Turma obj) {		
-		modelMapper.map(restauranteInput, obj);
+	public void copyToDomainObject(TurmaInput objInput, Turma obj) {		
+		modelMapper.map(objInput, obj);
 	}
 }

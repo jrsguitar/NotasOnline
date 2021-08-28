@@ -96,7 +96,7 @@ public class AlunoController {
 
 	@PutMapping("/{id}")
 	public AlunoModel atualizar(@PathVariable Long id, @RequestBody @Valid AlunoInput alunoInput) {
-		Aluno alunoAtual = alunoService.findById(id);
+		Aluno alunoAtual = alunoService.findById(id);		
 		disassembler.copyToDomainObject(alunoInput, alunoAtual);
 		return assembler.toModel(alunoService.insert(alunoAtual));
 	}

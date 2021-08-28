@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.jrcode.api.model.input.AlunoInput;
 import br.com.jrcode.domain.model.Aluno;
+import br.com.jrcode.domain.model.Escola;
 
 @Component
 public class AlunoModelDisassembler {
@@ -16,7 +17,8 @@ public class AlunoModelDisassembler {
 		return modelMapper.map(obj, Aluno.class);
 	}
 	
-	public void copyToDomainObject(AlunoInput restauranteInput, Aluno obj) {		
-		modelMapper.map(restauranteInput, obj);
+	public void copyToDomainObject(AlunoInput objInput, Aluno obj) {	
+		obj.setEscola(new Escola());
+		modelMapper.map(objInput, obj);		
 	}
 }
