@@ -40,7 +40,7 @@ public class TurmaService {
 	}
 
 	@Transactional
-	public Turma insert(Turma obj) {
+	public Turma save(Turma obj) {
 		Turma turmaBanco = turmaRepository.findByNome(obj.getNome());
 
 		if (turmaBanco == null) {

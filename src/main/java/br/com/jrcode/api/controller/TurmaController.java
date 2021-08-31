@@ -67,7 +67,7 @@ public class TurmaController {
 	@PostMapping
 	public ResponseEntity<TurmaModel> criar(@RequestBody @Valid TurmaInput obj) {
 		Turma turma = disassembler.toDomainObject(obj);
-		TurmaModel turmaModel = assembler.toModel(turmaService.insert(turma));
+		TurmaModel turmaModel = assembler.toModel(turmaService.save(turma));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(turmaModel.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
@@ -77,7 +77,7 @@ public class TurmaController {
 	public TurmaModel atualizar(@PathVariable Long id, @RequestBody @Valid TurmaInput turmaInput) {
 		Turma turmaAtual = turmaService.findById(id);
 		disassembler.copyToDomainObject(turmaInput, turmaAtual);
-		return assembler.toModel(turmaService.insert(turmaAtual));
+		return assembler.toModel(turmaService.save(turmaAtual));
 	}
 	
 	
