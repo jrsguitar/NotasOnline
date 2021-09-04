@@ -1,4 +1,4 @@
-package br.com.jrcode.turma;
+package br.com.jrcode.integration.turma;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
