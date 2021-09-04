@@ -14,6 +14,20 @@ Projeto para cadastrar e recuperar notas e médias dos alunos das escolas públi
         </td>    
     </tr>
 </table>
+<h3>Diagrama de Classes</h3>
+<table align="center">
+	<img src="https://jrcode.com.br/Class_Diagram_NotasOnline.jpg" width="" alt="Diagrama de classes" />
+</table>
+
+
+
+
+
+
+
+
+
+
 
 
 
