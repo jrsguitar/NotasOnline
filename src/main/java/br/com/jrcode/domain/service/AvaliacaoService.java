@@ -32,7 +32,7 @@ public class AvaliacaoService {
 	}
 
 	public Page<Avaliacao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		var pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return avaliacaoRepository.findAll(pageRequest);
 	}
 
@@ -44,7 +44,7 @@ public class AvaliacaoService {
 
 	@Transactional
 	public Avaliacao update(Avaliacao obj, Long id) {
-		Avaliacao newObj = findById(id);
+		var newObj = findById(id);
 		BeanUtils.copyProperties(obj, newObj, "id");
 		return avaliacaoRepository.save(newObj);
 	}

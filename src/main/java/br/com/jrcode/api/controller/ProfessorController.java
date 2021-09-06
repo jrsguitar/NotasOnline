@@ -1,6 +1,5 @@
 package br.com.jrcode.api.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -68,9 +67,9 @@ public class ProfessorController {
 
 	@PostMapping
 	public ResponseEntity<ProfessorModel> criar(@RequestBody @Valid ProfessorInput obj) {
-		Professor professor = disassembler.toDomainObject(obj);
-		ProfessorModel professorModel = assembler.toModel(professorService.insert(professor));
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(professorModel.getId())
+		var professor = disassembler.toDomainObject(obj);
+		var professorModel = assembler.toModel(professorService.insert(professor));
+		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(professorModel.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}

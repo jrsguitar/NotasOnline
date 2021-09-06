@@ -1,6 +1,5 @@
 package br.com.jrcode.api.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -67,16 +66,16 @@ public class DisciplinaController {
 
 	@PostMapping
 	public ResponseEntity<DisciplinaModel> criar(@RequestBody @Valid DisciplinaInput obj) {
-		Disciplina disciplina = disassembler.toDomainObject(obj);
-		DisciplinaModel disciplinaModel = assembler.toModel(disciplinaService.insert(disciplina));
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(disciplinaModel.getId())
+		var disciplina = disassembler.toDomainObject(obj);
+		var disciplinaModel = assembler.toModel(disciplinaService.insert(disciplina));
+		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(disciplinaModel.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping("/{id}")
 	public DisciplinaModel atualizar(@PathVariable Long id, @RequestBody @Valid DisciplinaInput disciplinaInput) {
-		Disciplina disciplinaAtual = disciplinaService.findById(id);
+		var disciplinaAtual = disciplinaService.findById(id);
 		disassembler.copyToDomainObject(disciplinaInput, disciplinaAtual);
 		return assembler.toModel(disciplinaService.insert(disciplinaAtual));
 	}

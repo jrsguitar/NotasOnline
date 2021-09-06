@@ -1,6 +1,5 @@
 package br.com.jrcode.api.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -66,16 +65,16 @@ public class TurmaController {
 
 	@PostMapping
 	public ResponseEntity<TurmaModel> criar(@RequestBody @Valid TurmaInput obj) {
-		Turma turma = disassembler.toDomainObject(obj);
-		TurmaModel turmaModel = assembler.toModel(turmaService.save(turma));
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(turmaModel.getId())
+		var turma = disassembler.toDomainObject(obj);
+		var turmaModel = assembler.toModel(turmaService.save(turma));
+		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(turmaModel.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping("/{id}")
 	public TurmaModel atualizar(@PathVariable Long id, @RequestBody @Valid TurmaInput turmaInput) {
-		Turma turmaAtual = turmaService.findById(id);
+		var turmaAtual = turmaService.findById(id);
 		disassembler.copyToDomainObject(turmaInput, turmaAtual);
 		return assembler.toModel(turmaService.save(turmaAtual));
 	}

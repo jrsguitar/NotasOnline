@@ -1,6 +1,5 @@
 package br.com.jrcode.api.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -87,16 +86,16 @@ public class AlunoController {
 
 	@PostMapping
 	public ResponseEntity<AlunoModel> criar(@RequestBody @Valid AlunoInput obj) {
-		Aluno aluno = disassembler.toDomainObject(obj);
-		AlunoModel alunoModel = assembler.toModel(alunoService.insert(aluno));
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(alunoModel.getId())
+		var aluno = disassembler.toDomainObject(obj);
+		var alunoModel = assembler.toModel(alunoService.insert(aluno));
+		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(alunoModel.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping("/{id}")
 	public AlunoModel atualizar(@PathVariable Long id, @RequestBody @Valid AlunoInput alunoInput) {
-		Aluno alunoAtual = alunoService.findById(id);		
+		var alunoAtual = alunoService.findById(id);		
 		disassembler.copyToDomainObject(alunoInput, alunoAtual);
 		return assembler.toModel(alunoService.insert(alunoAtual));
 	}

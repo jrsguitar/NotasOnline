@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.jrcode.domain.model.Aluno;
-import br.com.jrcode.domain.model.Escola;
 import br.com.jrcode.domain.repository.AlunoRepository;
 import br.com.jrcode.domain.repository.EscolaRepository;
 import br.com.jrcode.domain.service.exception.DataIntegrityException;
@@ -52,13 +51,13 @@ public class AlunoService {
 	}
 
 	public Page<Aluno> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		var pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return alunoRepository.findAll(pageRequest);
 	}
 
 	@Transactional
 	public Aluno insert(Aluno obj) {
-		Escola escola = escolaRepository.findById(obj.getEscola().getId())
+		var escola = escolaRepository.findById(obj.getEscola().getId())
 				.orElseThrow(() -> new ObjectNotFoundException("Escola não encontrado id=" + obj.getEscola().getId()));
 		obj.setEscola(escola);
 		return alunoRepository.save(obj);

@@ -32,7 +32,7 @@ public class EscolaService {
 	}
 
 	public Page<Escola> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		var pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return escolaRepository.findAll(pageRequest);
 	}
 

@@ -35,13 +35,13 @@ public class TurmaService {
 	}
 
 	public Page<Turma> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		var pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return turmaRepository.findAll(pageRequest);
 	}
 
 	@Transactional
 	public Turma save(Turma obj) {
-		Turma turmaBanco = turmaRepository.findByNome(obj.getNome());
+		var turmaBanco = turmaRepository.findByNome(obj.getNome());
 
 		if (turmaBanco == null) {
 			obj.setId(null);
