@@ -11,5 +11,4 @@ public class AlunoModel {
 	private String nome;
 	private Long matricula;
 	private Escola escola;	
-
 }

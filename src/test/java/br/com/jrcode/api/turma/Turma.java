@@ -16,7 +16,7 @@ import util.ResourceUtils;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class Turma {
+class Turma {
 
 	private static final int TURMA_ID_INEXISTENTE = 100;
 	private static final int TURMA_ID_EXISTENTE = 1;
@@ -37,33 +37,33 @@ public class Turma {
 	}
 
 	@Test
-	public void deveRetornarStatus200_QuandoConsultar() {
+	void deveRetornarStatus200_QuandoConsultar() {
 
 		RestAssured.given().accept(ContentType.JSON).when().get().then().statusCode(HttpStatus.OK.value());
 	}
 
 	@Test
-	public void deveRetornar4Turmas_QuandoConsultar() {
+	void deveRetornar4Turmas_QuandoConsultar() {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
 		RestAssured.given().accept(ContentType.JSON).when().get().then().body("", hasSize(TURMA_QUANTIDADE));
 	}
 
 	@Test
-	public void deveRetornarRespostaEStatusCorreto_QuandoConsultarTurmaExistente() {
+	void deveRetornarRespostaEStatusCorreto_QuandoConsultarTurmaExistente() {
 		RestAssured.given().pathParam("turmaId", TURMA_ID_EXISTENTE).accept(ContentType.JSON).when().get("/{turmaId}")
 				.then().statusCode(HttpStatus.OK.value()).body("nome", equalTo(TURMA_NOME_CORRETO));
 	}
 
 	@Test
-	public void deveRetornarRespostaEStatusCorreto_QuandoConsultarTurmaInexistente() {
+	void deveRetornarRespostaEStatusCorreto_QuandoConsultarTurmaInexistente() {
 		RestAssured.given().pathParam("turmaId", TURMA_ID_INEXISTENTE).accept(ContentType.JSON).when().get("/{turmaId}")
 				.then().statusCode(HttpStatus.NOT_FOUND.value());
 
 	}
 
 	@Test
-	public void deveRetornarStatus201_QuandoCadastrarTurma() {
+	void deveRetornarStatus201_QuandoCadastrarTurma() {
 		RestAssured.given().body(jsonTurmaCorreta).contentType(ContentType.JSON).accept(ContentType.JSON).when().post()
 				.then().statusCode(HttpStatus.CREATED.value());
 	}

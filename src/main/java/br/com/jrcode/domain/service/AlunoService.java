@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.jrcode.domain.model.Aluno;
+import br.com.jrcode.domain.model.Avaliacao;
 import br.com.jrcode.domain.repository.AlunoRepository;
 import br.com.jrcode.domain.repository.EscolaRepository;
 import br.com.jrcode.domain.service.exception.DataIntegrityException;
@@ -72,6 +73,11 @@ public class AlunoService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há dados relacionados ao objeto");
 		}
+	}
+
+	@Transactional
+	public void insertAvaliacao(Aluno aluno, Avaliacao avaliacao) {
+		findById(aluno.getId()).getAvaliacoes().add(avaliacao);
 	}
 
 }

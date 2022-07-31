@@ -101,7 +101,7 @@ public class AlunoController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> remover(@PathVariable Long id) {
+	public ResponseEntity<? extends Aluno> remover(@PathVariable Long id) {
 		alunoService.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
